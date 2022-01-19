@@ -1,8 +1,9 @@
 ########################################################################################
 ## Author:        Ian McCarthy
 ## Date Created:  7/8/2019
-## Date Edited:   1/4/2022
+## Date Edited:   1/19/2022
 ## Notes:         R file to build Medicare Advantage dataset
+##                Edited to match paths in AWS system
 ########################################################################################
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
@@ -16,28 +17,28 @@ source('R_code/paths.R')
 #########################################################################
 ## Build plan-level dataset
 #########################################################################
-source(paste(path.code,"/1_Plan_Data.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/2_Plan_Characteristics.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/3_Service_Areas.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/4_Penetration_Files.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/5_Star_Ratings.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/6_Risk_Rebates.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/7_MA_Benchmark.R",sep=""),local=TRUE,echo=FALSE)
-source(paste(path.code,"/8_FFS_Costs.R",sep=""),local=TRUE,echo=FALSE)
+source(paste0(path.code,"/1_Plan_Data.R"))
+source(paste0(path.code,"/2_Plan_Characteristics.R"))
+source(paste0(path.code,"/3_Service_Areas.R"))
+source(paste0(path.code,"/4_Penetration_Files.R"))
+source(paste0(path.code,"/5_Star_Ratings.R"))
+source(paste0(path.code,"/6_Risk_Rebates.R"))
+source(paste0(path.code,"/7_MA_Benchmark.R"))
+source(paste0(path.code,"/8_FFS_Costs.R"))
 
 
 #########################################################################
 ## Organize final data
 #########################################################################
-full.ma.data <- read_rds("data/full_ma_data.rds")
-contract.service.area <- read_rds("data/contract_service_area.rds")
-star.ratings <- read_rds("data/star_ratings.rds")
-ma.penetration.data <- read_rds("data/ma_penetration.rds")
-plan.premiums <- read_rds("data/plan_premiums.rds")
-risk.rebate.final <- read_rds("data/risk_rebate.rds")
-benchmark.final <- read_rds("data/ma_benchmark.rds") %>%
+full.ma.data <- read_rds("full_ma_data.rds")
+contract.service.area <- read_rds("contract_service_area.rds")
+star.ratings <- read_rds("star_ratings.rds")
+ma.penetration.data <- read_rds("ma_penetration.rds")
+plan.premiums <- read_rds("plan_premiums.rds")
+risk.rebate.final <- read_rds("risk_rebate.rds")
+benchmark.final <- read_rds("ma_benchmark.rds") %>%
   mutate(ssa=as.double(ssa))
-ffs.costs.final <- read_rds("data/ffs_costs.rds")
+ffs.costs.final <- read_rds("ffs_costs.rds")
 
 final.data <- full.ma.data %>%
   inner_join(contract.service.area %>% 
@@ -130,8 +131,7 @@ final.data <- final.data %>%
     TRUE ~ NA_real_
   ))
 
-write_tsv(final.data,file=paste(path.data.final,"/Final_MA_Data.txt",sep=""),append=FALSE,col_names=TRUE)
-write_rds(final.data,paste(path.data.final,"/final_ma_data.rds",sep=""))
+write_rds(final.data,"final_ma_data.rds")
 
 
 

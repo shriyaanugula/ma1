@@ -24,7 +24,7 @@ for (y in 2006:2015) {
   for (m in monthlist) {
     
     ## Basic contract/plan information
-    ma.path=paste0(path.data.ma,"/Monthly MA and PDP Enrollment by CPSC/Monthly MA and PDP Enrollment by CPSC/Extracted Data/CPSC_Contract_Info_",y,"_",m,".csv")
+    ma.path=paste0(path.data.ma,"/monthly-ma-and-pdp-enrollment-by-cpsc/CPSC_Contract_Info_",y,"_",m,".csv")
     contract.info=read_csv(ma.path,
                            skip=1,
                            col_names = c("contractid","planid","org_type","plan_type",
@@ -54,7 +54,7 @@ for (y in 2006:2015) {
       select(-id_count)
     
     ## Enrollments per plan
-    ma.path=paste0(path.data.ma,"/Monthly MA and PDP Enrollment by CPSC/Monthly MA and PDP Enrollment by CPSC/Extracted Data/CPSC_Enrollment_Info_",y,"_",m,".csv")    
+    ma.path=paste0(path.data.ma,"/monthly-ma-and-pdp-enrollment-by-cpsc/CPSC_Enrollment_Info_",y,"_",m,".csv")    
     enroll.info=read_csv(ma.path,
                          skip=1,
                          col_names = c("contractid","planid","ssa","fips","state","county","enrollment"),
@@ -115,13 +115,12 @@ for (y in 2006:2015) {
               plan_name=last(plan_name),parent_org=last(parent_org),contract_date=last(contract_date),
               year=last(year))
   
-  write_rds(plan.year,paste0(path.data.final,"/ma_data_",y,".rds"))
+  write_rds(plan.year,paste0("ma_data_",y,".rds"))
 }
 
-full.ma.data <- readRDS(paste0(path.data.final,"/ma_data_2006.rds"))
+full.ma.data <- read_rds("ma_data_2006.rds")
 for (y in 2007:2015) {
-  full.ma.data <- rbind(full.ma.data,readRDS(paste0(path.data.final,"/ma_data_",y,".rds")))
+  full.ma.data <- rbind(full.ma.data,read_rds(paste0("ma_data_",y,".rds")))
 }
 
-write_tsv(full.ma.data,path=paste(path.data.final,"/Full_Contract_Plan_County.txt",sep=""),append=FALSE,col_names=TRUE)
-write_rds(full.ma.data,paste(path.data.final,"/full_ma_data.rds",sep=""))
+write_rds(full.ma.data,"full_ma_data.rds")
