@@ -124,3 +124,4 @@ for (y in 2007:2015) {
 }
 
 write_rds(full.ma.data,"full_ma_data.rds")
+sapply(paste0("ma_data_", 2006:2015, ".rds"), unlink)
