@@ -1,7 +1,7 @@
 ########################################################################################
 ## Author:        Ian McCarthy
 ## Date Created:  7/8/2019
-## Date Edited:   1/19/2022
+## Date Edited:   1/24/2022
 ## Notes:         R file to build Medicare Advantage dataset
 ##                Edited to match paths in AWS system
 ########################################################################################
